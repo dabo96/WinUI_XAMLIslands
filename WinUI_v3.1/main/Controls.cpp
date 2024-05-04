@@ -35,7 +35,7 @@ Controls::IButton::IButton(const wchar_t* texto, int posx, int posy)
 
 	b.Content(winrt::box_value(texto));
 	b.Background(Windows::UI::Xaml::Media::SolidColorBrush{ Windows::UI::Colors::Blue() });
-	//b.Click({ this,  Windows::UI::Xaml::RoutedEventHandler(&IButton::onClick) });
+	b.Click({ this,  Windows::UI::Xaml::RoutedEventHandler(&IButton::onClick) });
 }
 
 Windows::UI::Xaml::Input::ICommand Controls::IButton::getBtnCommand()
@@ -60,20 +60,20 @@ Windows::UI::Xaml::Controls::Button Controls::IButton::create()
 	return b;
 }
 
-//void Controls::IButton::onClick(IInspectable const&,Windows::UI::Xaml::RoutedEventArgs const&)
-//{
-//	f();
-//}
+void Controls::IButton::onClick(IInspectable const&,Windows::UI::Xaml::RoutedEventArgs const&)
+{
+	f();
+}
 //
 //void Controls::IButton::onPress(IInspectable const&)
 //{
 //
 //}
 //
-//void Controls::IButton::setFunction(std::function<void()> function)
-//{
-//	f = function;
-//}
+void Controls::IButton::setFunction(std::function<void()> function)
+{
+	f = function;
+}
 
 Controls::TextField::TextField(const wchar_t* texto, int posx, int posy)
 {

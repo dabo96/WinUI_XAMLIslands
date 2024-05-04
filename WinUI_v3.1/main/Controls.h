@@ -96,10 +96,10 @@ namespace Controls
 		Windows::UI::Xaml::Controls::Button create();
 		Windows::UI::Xaml::Input::ICommand getBtnCommand();
 		
-		/*void setFunction(std::function<void()> function);
+		void setFunction(std::function<void()> function);
 	protected:
 		void onClick(IInspectable const&, Windows::UI::Xaml::RoutedEventArgs const& args);
-		void onPress(IInspectable const&);*/
+		//void onPress(IInspectable const&);
 	private:
 		Button b;
 		//winrt::Windows::UI::Xaml::Controls::Button::Click_revoker clickRevoker;
