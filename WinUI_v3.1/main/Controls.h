@@ -103,7 +103,7 @@ namespace Controls
 	private:
 		Button b;
 		//winrt::Windows::UI::Xaml::Controls::Button::Click_revoker clickRevoker;
-		//std::function<void()> f;
+		std::function<void()> f;
 		Windows::UI::Xaml::Input::ICommand btnCommand;
 	};
 
