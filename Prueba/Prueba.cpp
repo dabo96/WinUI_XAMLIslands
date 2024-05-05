@@ -16,14 +16,37 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 void createControls(Window* w) {
     Controls::ControlWindow* window = new Controls::ControlWindow(L"toolbar window", 0, 0, 500, 800);
-    Controls::ControlWindow* window1 = new Controls::ControlWindow(L"toolbar window", 600, 0, 500, 800);
-    HWND hwnd = window->create(w->handle());
-    HWND hwnd1 = window1->create(w->handle());
+    
+    HWND hwnd = window->create(w->handle());    
 
     std::shared_ptr<Controls::Label> l =  std::make_shared<Controls::Label>(L"Hola Mundo", 100, 100);
     
     Controls::Label lm(L"Hola", 100, 300);
-    std::shared_ptr<Controls::IButton> b = std::make_shared<Controls::IButton>(L"Prueba", 10, 10);
+    std::shared_ptr<Controls::IButton> b = std::make_shared<Controls::IButton>(L"Prueba", 10, 10, [window]() {
+        std::shared_ptr<Controls::Label> p = std::make_shared<Controls::Label>(L"Hola Mundo", 100, 800);
+        window->getPanel()->Children().Append(p->create());
+        window->getPanel()->UpdateLayout();
+        /*Controls::ControlWindow* window1 = new Controls::ControlWindow(L"toolbar window", 600, 0, 500, 800);
+        HWND hwnd1 = window1->create(w->handle());*/
+        });
+    //b->Click([&](IInspectable const& sender, Windows::UI::Xaml::RoutedEventArgs) {sender.as<Button>().Content(box_value(L"Thank You!")); });
+    //std::shared_ptr<Controls::IButton> b = std::make_shared<Controls::IButton>(L"Prueba", 10, 10);
+    /*b->setFunction([l]() {
+        l->Text(L"Hola");
+    });*/
+
+    /*Button bc;
+    bc.Content(winrt::box_value(L"Hola mundo"));
+    bc.Click([](winrt::Windows::Foundation::IInspectable const& sender,
+        	winrt::Windows::UI::Xaml::RoutedEventArgs const& args){
+        		sender.as<Button>().Content(box_value(L"Clicked"));        		
+        	});
+
+    TranslateTransform t;
+    t.X(400);
+    t.Y(600);
+    
+    bc.RenderTransform(t);*/
 
     //HWND btn = CreateWindow(L"BUTTON", L"Hola mundo", WS_CHILD | WS_VISIBLE, 100, 100, 90, 20, hwnd1, (HMENU)1, NULL, NULL);
     
@@ -40,6 +63,7 @@ void createControls(Window* w) {
     window->getPanel()->Children().Append(l->create());
     window->getPanel()->Children().Append(lm.create());
     window->getPanel()->Children().Append(b->create());
+    //window->getPanel()->Children().Append(bc);
     //window->getPanel()->Children().Append(tf.create());
     //window->getPanel()->Children().Append(ta.create());
 }

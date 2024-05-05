@@ -92,19 +92,17 @@ namespace Controls
 {
 	struct IButton : public Button{
 	public:
+		IButton(const wchar_t* texto, int posx, int posy, std::function<void()> onClick);
 		IButton(const wchar_t* texto, int posx, int posy);
 		Windows::UI::Xaml::Controls::Button create();
-		Windows::UI::Xaml::Input::ICommand getBtnCommand();
+
+		void ClickHandler(winrt::Windows::Foundation::IInspectable const& sender,
+			winrt::Windows::UI::Xaml::RoutedEventArgs const& args);
 		
 		void setFunction(std::function<void()> function);
-	protected:
-		void onClick(IInspectable const&, Windows::UI::Xaml::RoutedEventArgs const& args);
-		//void onPress(IInspectable const&);
 	private:
 		Button b;
-		//winrt::Windows::UI::Xaml::Controls::Button::Click_revoker clickRevoker;
 		std::function<void()> f;
-		Windows::UI::Xaml::Input::ICommand btnCommand;
 	};
 
 	struct Label : public TextBlock{
