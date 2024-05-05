@@ -22,7 +22,7 @@ void Controls::Label::changeText(const wchar_t* texto)
 	tb.Text(texto);
 }
 
-Controls::IButton::IButton(const wchar_t* texto, int posx, int posy)
+Controls::IButton::IButton(const wchar_t* texto, int posx, int posy, std::function<void()> onClick)
 {
 	TranslateTransform translate;
 
@@ -30,29 +30,30 @@ Controls::IButton::IButton(const wchar_t* texto, int posx, int posy)
 	translate.Y(posy);
 
 	//Click function
-	//btnCommand = winrt::make<RelayCommand>(f);
-	b.Command(IButton::btnCommand);
+	//f = onClick;
 
 	b.Content(winrt::box_value(texto));
 	b.Background(Windows::UI::Xaml::Media::SolidColorBrush{ Windows::UI::Colors::Blue() });
-	//b.Click({ this,  Windows::UI::Xaml::RoutedEventHandler(&IButton::onClick) });
+	setFunction(onClick);
+	b.Click([this](winrt::Windows::Foundation::IInspectable const& sender,
+		winrt::Windows::UI::Xaml::RoutedEventArgs const& args){
+			//sender.as<Button>().Content(box_value(L"Clicked"));
+			f();
+		});
+	
+	//b.Click({this, &IButton::f});
 }
 
-Windows::UI::Xaml::Input::ICommand Controls::IButton::getBtnCommand()
+Controls::IButton::IButton(const wchar_t* texto, int posx, int posy)
 {
-	if (btnCommand == nullptr)
-	{
-		btnCommand = winrt::make<RelayCommand>([]()
-		{
-			Windows::UI::Xaml::Controls::ContentDialog msg;
-			msg.Content(winrt::box_value(L"prueba"));
-			msg.Title(winrt::box_value(L"al fin"));
-			msg.CloseButtonText(L"Ok");
-			msg.ShowAsync();
-		}
-		);
-	}
-	return btnCommand;
+	TranslateTransform translate;
+
+	translate.X(posx);
+	translate.Y(posy);
+
+	b.Content(winrt::box_value(texto));
+	b.Background(Windows::UI::Xaml::Media::SolidColorBrush{ Windows::UI::Colors::Blue() });
+	b.Click({ this, &IButton::ClickHandler });
 }
 
 Windows::UI::Xaml::Controls::Button Controls::IButton::create()
@@ -60,16 +61,11 @@ Windows::UI::Xaml::Controls::Button Controls::IButton::create()
 	return b;
 }
 
-void Controls::IButton::onClick(IInspectable const&,Windows::UI::Xaml::RoutedEventArgs const&)
+void Controls::IButton::ClickHandler(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& args)
 {
-	f();
+	//sender.as<>
 }
-//
-//void Controls::IButton::onPress(IInspectable const&)
-//{
-//
-//}
-//
+
 void Controls::IButton::setFunction(std::function<void()> function)
 {
 	f = function;
